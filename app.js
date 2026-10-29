@@ -14,7 +14,7 @@ let LIBUR_NASIONAL = [
   "2026-12-25"
 ];
 
-const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024; // PEMBATASAN MAKSIMAL 2 MB
+const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024; // MAKSIMAL 2 MB
 
 document.addEventListener("DOMContentLoaded", () => {
   setupTabSwitcher();
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchHolidaysFromPublicAPI();
 });
 
-// MEMUAT DATA MASTER AKTIVITAS DARI APPS SCRIPT
+// MEMUAT MASTER AKTIVITAS DARI APPS SCRIPT
 function fetchMasterAktivitas() {
   fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "get_master_aktivitas" }) })
     .then(res => res.json())
@@ -46,7 +46,7 @@ function fetchMasterAktivitas() {
     .catch(err => console.error("Gagal memuat master aktivitas:", err));
 }
 
-// LOGIKA PENCARIAN & FILTER CERDAS MASTER AKTIVITAS BAKU
+// QUICK FILTER & CERDAS SEARCH MASTER AKTIVITAS BAKU
 function setupQuickFilterEvents() {
   const filterBtns = document.querySelectorAll(".chip-filter");
   const inputSearch = document.getElementById("pwaAktivitasInput");
@@ -77,18 +77,16 @@ function renderMasterAktivitasDatalist(keyword = "") {
   let matchCount = 0;
 
   localMasterData.forEach(item => {
-    // MEMBACA KOLOM B "Aktivitas Baku"
+    // Membaca dari Kolom B: Aktivitas Baku
     const namaAkt = item.aktivitas || item.namaAktivitas || item.Aktivitas_Baku || "";
     const namaLower = namaAkt.toLowerCase();
 
-    // Cek Kategori Filter
     let passCategory = true;
     if (currentActiveFilter === "layanan") passCategory = namaLower.includes("layan");
     else if (currentActiveFilter === "dokumen") passCategory = namaLower.includes("dokumen") || namaLower.includes("sk") || namaLower.includes("berkas") || namaLower.includes("surat") || namaLower.includes("draft") || namaLower.includes("konsep");
     else if (currentActiveFilter === "rapat") passCategory = namaLower.includes("rapat") || namaLower.includes("koordinasi") || namaLower.includes("sosialisasi") || namaLower.includes("pimpinan");
     else if (currentActiveFilter === "evaluasi") passCategory = namaLower.includes("evaluasi") || namaLower.includes("laporan") || namaLower.includes("telaah") || namaLower.includes("verifikasi") || namaLower.includes("validasi");
 
-    // Cek Keyword
     let passKeyword = true;
     if (kw) passKeyword = namaLower.includes(kw);
 
@@ -103,7 +101,7 @@ function renderMasterAktivitasDatalist(keyword = "") {
   if (matchBadge) matchBadge.innerText = `${matchCount} Opsi Ditemukan`;
 }
 
-// LOGIKA KALKULASI POIN DAN WAKTU DARI KOLOM WAKTU (F) & BEBAN (G)
+// LOGIKA KALKULASI POIN (KOLOM G) & WAKTU (KOLOM F)
 function setupFormKegiatan() {
   const inputAktivitas = document.getElementById("pwaAktivitasInput");
   const inputSatuan = document.getElementById("pwaSatuan");
@@ -122,9 +120,9 @@ function setupFormKegiatan() {
     });
 
     if (match) {
-      selectedWaktu = parseInt(match.waktu) || 0;    // Membaca Kolom F: Waktu
-      selectedPoint = parseInt(match.point) || parseInt(match.beban) || 0; // Membaca Kolom G: Beban (Poin)
-      selectedSatuan = match.satuan || "Poin";       // Membaca Kolom C: Satuan
+      selectedWaktu = parseInt(match.waktu) || 0;                          // Kolom F: Waktu
+      selectedPoint = parseInt(match.point) || parseInt(match.beban) || 0; // Kolom G: Beban (Poin)
+      selectedSatuan = match.satuan || "Poin";                             // Kolom C: Satuan
     } else {
       selectedWaktu = 0;
       selectedPoint = 0;
