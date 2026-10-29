@@ -75,6 +75,7 @@ function setupQuickFilterEvents() {
   }
 }
 
+// OPTIMASI: BATASI MAKSIMAL 50 OPSI DI RENDER AGAR RINGAN & TIDAK LAG
 function renderMasterAktivitasDatalist(keyword = "") {
   const selectElem = document.getElementById("pwaAktivitasInput");
   const matchBadge = document.getElementById("aktivitasMatchCount");
@@ -83,15 +84,17 @@ function renderMasterAktivitasDatalist(keyword = "") {
   selectElem.innerHTML = '<option value="">-- Pilih Aktivitas Baku --</option>';
   const kw = keyword.toLowerCase();
   let matchCount = 0;
+  const MAX_DISPLAY_OPTIONS = 50; // Batas render cepat
 
   if (!localMasterData || localMasterData.length === 0) {
     if (matchBadge) matchBadge.innerText = "0 Opsi Ditemukan";
     return;
   }
 
-  localMasterData.forEach(item => {
+  for (let i = 0; i < localMasterData.length; i++) {
+    const item = localMasterData[i];
     const namaAkt = item.aktivitas || item.namaAktivitas || item.Aktivitas_Baku || "";
-    if (!namaAkt) return;
+    if (!namaAkt) continue;
 
     const namaLower = namaAkt.toLowerCase();
 
@@ -106,14 +109,23 @@ function renderMasterAktivitasDatalist(keyword = "") {
 
     if (passCategory && passKeyword) {
       matchCount++;
-      const opt = document.createElement("option");
-      opt.value = namaAkt;
-      opt.innerText = namaAkt;
-      selectElem.appendChild(opt);
-    }
-  });
 
-  if (matchBadge) matchBadge.innerText = `${matchCount} Opsi Ditemukan`;
+      if (matchCount <= MAX_DISPLAY_OPTIONS) {
+        const opt = document.createElement("option");
+        opt.value = namaAkt;
+        opt.innerText = namaAkt;
+        selectElem.appendChild(opt);
+      }
+    }
+  }
+
+  if (matchBadge) {
+    if (matchCount > MAX_DISPLAY_OPTIONS) {
+      matchBadge.innerText = `${matchCount} Ditemukan (Menampilkan 50 Teratas - Ketik Kata Kunci untuk Mempersempit)`;
+    } else {
+      matchBadge.innerText = `${matchCount} Opsi Ditemukan`;
+    }
+  }
 }
 
 function setupFormKegiatan() {

@@ -499,7 +499,15 @@ input.invalid-nip { border-color: var(--accent-orange) !important; }
 
 .app-form { display: flex; flex-direction: column; gap: 18px; margin-top: 15px; }
 .form-row { display: flex; gap: 20px; }
-.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
 .flex-1 { flex: 1; }
 
 .calc-badge-display {
@@ -523,8 +531,9 @@ input.invalid-nip { border-color: var(--accent-orange) !important; }
 #secPengaturan .form-container-card { max-width: 650px; padding: 28px; }
 #secPengaturan h3 { color: var(--text-main); font-size: 1.15rem; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
 
-/* FIX SELECT DROPDOWN */
+/* PENGUNCI LEBAR DROPDOWN KETAT AGAR TIDAK BREAK/MELEBAR */
 select#pwaAktivitasInput {
+  width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
   text-overflow: ellipsis !important;
@@ -540,6 +549,7 @@ select#pwaAktivitasInput option {
   color: var(--text-main) !important;
   padding: 8px 12px !important;
   max-width: 100% !important;
+  white-space: normal !important;
 }
 
 /* RESPONSIVE CSS UNTUK HP (MAX-WIDTH: 768PX) */
