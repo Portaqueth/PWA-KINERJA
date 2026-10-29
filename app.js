@@ -33,12 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchHolidaysFromPublicAPI();
 });
 
-// MEMUAT MASTER AKTIVITAS DARI APPS SCRIPT
+// MEMUAT DATA MASTER DARI GOOGLE APPS SCRIPT
 function fetchMasterAktivitas() {
   fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "get_master_aktivitas" }) })
     .then(res => res.json())
     .then(res => {
-      if (res.status === "success") {
+      if (res.status === "success" && Array.isArray(res.data)) {
         localMasterData = res.data;
         renderMasterAktivitasDatalist("");
       }
@@ -46,10 +46,10 @@ function fetchMasterAktivitas() {
     .catch(err => console.error("Gagal memuat master aktivitas:", err));
 }
 
-// QUICK FILTER & CERDAS SEARCH MASTER AKTIVITAS BAKU
+// LOGIKA FILTER & PENCARIAN DROPDOWN SELECT
 function setupQuickFilterEvents() {
   const filterBtns = document.querySelectorAll(".chip-filter");
-  const inputSearch = document.getElementById("pwaAktivitasInput");
+  const inputSearch = document.getElementById("inputSearchKeyword");
 
   filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -68,16 +68,15 @@ function setupQuickFilterEvents() {
 }
 
 function renderMasterAktivitasDatalist(keyword = "") {
-  const datalistElem = document.getElementById("listMasterAktivitas");
+  const selectElem = document.getElementById("pwaAktivitasInput");
   const matchBadge = document.getElementById("aktivitasMatchCount");
-  if (!datalistElem) return;
+  if (!selectElem) return;
 
-  datalistElem.innerHTML = "";
+  selectElem.innerHTML = '<option value="">-- Pilih Aktivitas Baku --</option>';
   const kw = keyword.toLowerCase();
   let matchCount = 0;
 
   localMasterData.forEach(item => {
-    // Membaca dari Kolom B: Aktivitas Baku
     const namaAkt = item.aktivitas || item.namaAktivitas || item.Aktivitas_Baku || "";
     const namaLower = namaAkt.toLowerCase();
 
@@ -94,16 +93,17 @@ function renderMasterAktivitasDatalist(keyword = "") {
       matchCount++;
       const opt = document.createElement("option");
       opt.value = namaAkt;
-      datalistElem.appendChild(opt);
+      opt.innerText = namaAkt;
+      selectElem.appendChild(opt);
     }
   });
 
   if (matchBadge) matchBadge.innerText = `${matchCount} Opsi Ditemukan`;
 }
 
-// LOGIKA KALKULASI POIN (KOLOM G) & WAKTU (KOLOM F)
+// LOGIKA KALKULASI POIN DAN WAKTU HARIAN
 function setupFormKegiatan() {
-  const inputAktivitas = document.getElementById("pwaAktivitasInput");
+  const selectAktivitas = document.getElementById("pwaAktivitasInput");
   const inputSatuan = document.getElementById("pwaSatuan");
   const inputKuantitas = document.getElementById("pwaKuantitas");
   const displayWaktu = document.getElementById("displayWaktu");
@@ -133,9 +133,8 @@ function setupFormKegiatan() {
     updateCalc();
   }
 
-  if (inputAktivitas) {
-    inputAktivitas.addEventListener("input", (e) => handleAktivitasChange(e.target.value));
-    inputAktivitas.addEventListener("change", (e) => handleAktivitasChange(e.target.value));
+  if (selectAktivitas) {
+    selectAktivitas.addEventListener("change", (e) => handleAktivitasChange(e.target.value));
   }
 
   if (inputKuantitas) inputKuantitas.addEventListener("input", updateCalc);
@@ -155,9 +154,9 @@ function setupFormKegiatan() {
   if (formKegiatan) {
     formKegiatan.addEventListener("submit", (e) => {
       e.preventDefault();
-      const selectedVal = inputAktivitas.value.trim();
+      const selectedVal = selectAktivitas.value.trim();
       if (!selectedVal) {
-        alert("⚠️ Silakan ketik atau pilih salah satu Nama Aktivitas Baku terlebih dahulu!");
+        alert("⚠️ Silakan pilih salah satu Nama Aktivitas Baku dari daftar terlebih dahulu!");
         return;
       }
 
@@ -439,13 +438,13 @@ function setupQuickActionButtons() {
       const lastItem = userKegiatanData[0];
       const namaAkt = lastItem.aktivitasRinci || lastItem.namaAktivitas || lastItem.aktivitas;
       
-      const elInput = document.getElementById("pwaAktivitasInput");
+      const elSelect = document.getElementById("pwaAktivitasInput");
       const elKuantitas = document.getElementById("pwaKuantitas");
       const elKeterangan = document.getElementById("pwaKeterangan");
 
-      if (elInput) {
-        elInput.value = namaAkt;
-        elInput.dispatchEvent(new Event("input"));
+      if (elSelect) {
+        elSelect.value = namaAkt;
+        elSelect.dispatchEvent(new Event("change"));
       }
       if (elKuantitas) elKuantitas.value = lastItem.kuantitas || 1;
       if (elKeterangan) elKeterangan.value = lastItem.keterangan || "";

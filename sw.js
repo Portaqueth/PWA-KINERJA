@@ -1,5 +1,5 @@
-// SW.JS - SERVICE WORKER PWA E-KINERJA BADUNG (VERSI V39)
-const CACHE_NAME = 'ekinerja-pwa-badung-v39';
+// SW.JS - SERVICE WORKER PWA E-KINERJA BADUNG (VERSI V40)
+const CACHE_NAME = 'ekinerja-pwa-badung-v40';
 
 const urlsToCache = [
   './',

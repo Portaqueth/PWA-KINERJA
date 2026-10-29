@@ -259,7 +259,7 @@
               </div>
             </div>
 
-            <!-- QUICK FILTER & SEARCH MASTER AKTIVITAS BAKU -->
+            <!-- DROPDOWN SELECT + FILTER AKTIVITAS BAKU -->
             <div class="form-group">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <label>Nama Aktivitas Baku *</label>
@@ -275,8 +275,13 @@
                 <button type="button" class="chip-filter" data-filter="evaluasi">Verifikasi/Laporan</button>
               </div>
 
-              <input type="text" id="pwaAktivitasInput" list="listMasterAktivitas" placeholder="Ketik kata kunci (contoh: 'verifikasi', 'arsip', 'konsep')..." required autocomplete="off">
-              <datalist id="listMasterAktivitas"></datalist>
+              <!-- PENCARIAN KATA KUNCI -->
+              <input type="text" id="inputSearchKeyword" placeholder="🔍 Ketik kata kunci pencarian (contoh: 'verifikasi', 'arsip')..." style="margin-bottom: 8px;">
+
+              <!-- ELEMENT SELECT UNTUK POP-UP DROPDOWN -->
+              <select id="pwaAktivitasInput" required style="cursor: pointer;">
+                <option value="">-- Memuat Aktivitas Baku... --</option>
+              </select>
             </div>
 
             <div class="form-row">
