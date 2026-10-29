@@ -35,15 +35,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // MEMUAT DATA MASTER DARI GOOGLE APPS SCRIPT
 function fetchMasterAktivitas() {
+  const selectElem = document.getElementById("pwaAktivitasInput");
+  if (selectElem) {
+    selectElem.innerHTML = '<option value="">⏳ Memuat data dari Google Sheets...</option>';
+  }
+
   fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "get_master_aktivitas" }) })
     .then(res => res.json())
     .then(res => {
-      if (res.status === "success" && Array.isArray(res.data)) {
+      console.log("Response Master Data:", res);
+      if (res.status === "success" && Array.isArray(res.data) && res.data.length > 0) {
         localMasterData = res.data;
         renderMasterAktivitasDatalist("");
+      } else {
+        alert("⚠️ Gagal mengambil data: " + (res.message || "Data sheet Aktivitas Baku kosong"));
+        if (selectElem) selectElem.innerHTML = '<option value="">⚠️ Data Gagal Dimuat</option>';
       }
     })
-    .catch(err => console.error("Gagal memuat master aktivitas:", err));
+    .catch(err => {
+      console.error("Gagal memuat master aktivitas:", err);
+      if (selectElem) selectElem.innerHTML = '<option value="">⚠️ Error Koneksi / URL Script</option>';
+    });
 }
 
 // LOGIKA FILTER & PENCARIAN DROPDOWN SELECT
@@ -76,8 +88,15 @@ function renderMasterAktivitasDatalist(keyword = "") {
   const kw = keyword.toLowerCase();
   let matchCount = 0;
 
+  if (!localMasterData || localMasterData.length === 0) {
+    if (matchBadge) matchBadge.innerText = "0 Opsi Ditemukan";
+    return;
+  }
+
   localMasterData.forEach(item => {
     const namaAkt = item.aktivitas || item.namaAktivitas || item.Aktivitas_Baku || "";
+    if (!namaAkt) return;
+
     const namaLower = namaAkt.toLowerCase();
 
     let passCategory = true;
