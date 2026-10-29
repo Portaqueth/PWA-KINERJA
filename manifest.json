@@ -1,0 +1,21 @@
+{
+  "short_name": "E-Kinerja",
+  "name": "Aplikasi PWA Laporan E-Kinerja Badung",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2682/2682065.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2682/2682065.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#15803d",
+  "display": "standalone",
+  "orientation": "portrait"
+}

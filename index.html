@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PORTAL KINERJA PEGAWAI - PEMKAB BADUNG</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- SCREEN 1: LOGIN & REGISTRASI MODAL -->
+  <div id="authScreen" class="auth-wrapper active">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--accent-green);">PORTAL KINERJA PEGAWAI</h2>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tabLoginBtn" class="auth-tab-btn active">Masuk Akun</button>
+        <button id="tabSignupBtn" class="auth-tab-btn">Registrasi Pegawai</button>
+      </div>
+
+      <!-- Form Login -->
+      <form id="formLogin" class="auth-form active">
+        <div class="input-group">
+          <label>NIP Pegawai</label>
+          <div class="input-nip-wrapper">
+            <input type="text" id="loginNip" placeholder="Masukkan 18 Digit NIP" maxlength="18" required autocomplete="off">
+            <span id="loginNipBadge" class="nip-badge-icon"></span>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>PIN Akses</label>
+          <input type="password" id="loginPin" placeholder="Masukkan PIN" required>
+        </div>
+        <button type="submit" class="btn-primary">⚡ Masuk ke Portal</button>
+      </form>
+
+      <!-- Form Signup -->
+      <form id="formSignup" class="auth-form">
+        <div class="input-group">
+          <label>NIP Pegawai</label>
+          <div class="input-nip-wrapper">
+            <input type="text" id="signupNip" placeholder="Masukkan 18 Digit NIP" maxlength="18" required autocomplete="off">
+            <span id="signupNipBadge" class="nip-badge-icon"></span>
+          </div>
+          <small id="signupNipStatus" class="nip-status-text"></small>
+        </div>
+
+        <div class="input-group">
+          <label>Nama Lengkap & Gelar</label>
+          <input type="text" id="signupNama" placeholder="Nama Lengkap dengan Gelar" style="text-transform: uppercase;" required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label>Jabatan</label>
+          <input type="text" id="signupJabatan" placeholder="Ketik Jabatan Anda" style="text-transform: uppercase;" required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label>OPD / Unit Kerja</label>
+          <input type="text" id="signupOpd" placeholder="Ketik OPD / Unit Kerja Anda" style="text-transform: uppercase;" required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <label>Buat PIN (4-6 Digit)</label>
+          <input type="password" id="signupPin" placeholder="PIN Rahasia" required>
+        </div>
+
+        <button type="submit" class="btn-secondary">📝 Buat Akun Baru</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: MAIN DASHBOARD APP -->
+  <div id="mainScreen" class="dashboard-wrapper">
+    
+    <aside class="sidebar" id="appSidebar">
+      <div class="brand-logo">
+        <div class="brand-info">
+          <div class="logo-icon">💼</div>
+          <div class="logo-text">
+            <h3>PORTAL KINERJA</h3>
+          </div>
+        </div>
+        <button type="button" id="btnToggleSidebar" class="btn-toggle-sidebar" title="Minimize / Expand Menu">
+          ☰
+        </button>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-target="secBeranda"><span class="icon">🏠</span> <span class="nav-text">Beranda</span></button>
+        <button class="nav-item" data-target="secCalendar"><span class="icon">📅</span> <span class="nav-text">Kalender</span></button>
+        <button class="nav-item" data-target="secLaporan"><span class="icon">📝</span> <span class="nav-text">Laporan Harian</span></button>
+        <button class="nav-item" data-target="secRekap"><span class="icon">📊</span> <span class="nav-text">Rekapitulasi</span></button>
+        <button class="nav-item" data-target="secQuickCopy"><span class="icon">⚡</span> <span class="nav-text">Catatan Cepat</span></button>
+        <button class="nav-item" data-target="secArsip"><span class="icon">📁</span> <span class="nav-text">Arsip Dokumen</span></button>
+        <button class="nav-item" data-target="secPengaturan"><span class="icon">⚙️</span> <span class="nav-text">Pengaturan</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btnLogout" class="btn-logout"><span class="icon">🚪</span> <span class="nav-text">Keluar</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="welcome-text">
+          <span class="badge-opd" id="userOpdBadge">OPD / UNIT KERJA</span>
+          <p>Optimalkan Laporan Kinerja Harian Anda secara Otomatis</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <!-- LONCENG NOTIFIKASI PENGINGAT -->
+          <div class="notif-wrapper">
+            <button id="btnNotifBell" type="button" class="btn-notif-bell">
+              🔔 <span id="notifBadgeCount" class="notif-badge-count" style="display:none;">0</span>
+            </button>
+
+            <div id="notifDropdown" class="notif-dropdown">
+              <div class="notif-header">
+                <h4>🔔 Pengingat & Notifikasi</h4>
+                <button id="btnCloseNotif" type="button" class="btn-close-notif">✖</button>
+              </div>
+              <div id="notifListContainer" class="notif-list-body">
+                <p class="text-muted text-center" style="font-size:0.85rem; padding:12px;">Memeriksa laporan...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-info">
+              <h4 id="userNama">NAMA PEGAWAI</h4>
+              <p id="userNip">NIP: -</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- SECTION: BERANDA -->
+      <section id="secBeranda" class="content-section active">
+        <div class="dashboard-hero">
+          <div class="hero-header">
+            <div>
+              <span class="hero-subtitle">PROGRESS LOKAL E-KINERJA</span>
+              <h2 id="currentPeriodTitle">Memuat Bulan...</h2>
+            </div>
+            <div class="progress-badge" id="progressPercentage">0% Target 10.000 Poin</div>
+          </div>
+
+          <div class="progress-bar-container">
+            <div class="progress-fill" id="progressBarFill" style="width: 0%;"></div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-num" id="statAktivitasCount">0</span>
+              <span class="stat-label">Aktivitas Terisi</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="statTotalPoint">0</span>
+              <span class="stat-label">Total Poin Terkumpul</span>
+            </div>
+            <div class="stat-card border-orange-card">
+              <span class="stat-num text-orange-bold" id="statSisaPoint">10.000</span>
+              <span class="stat-label" id="statSisaLabel">Sisa Poin Menuju Target</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="statTotalDurasi">0 Jam</span>
+              <span class="stat-label">Total Durasi</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions-bar">
+          <button id="btnTambahLaporan" type="button" class="btn-action primary">➕ Tambah Laporan Harian</button>
+          <button id="btnSalinKegiatanKemarin" type="button" class="btn-action secondary">📋 Salin Kegiatan Kemarin</button>
+          <button id="btnCetakRekapPdf" type="button" class="btn-action outline">📑 Cetak Rekap PDF / Excel</button>
+        </div>
+
+        <div class="recent-card">
+          <h3>Aktivitas Terbaru Bulan Ini</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Tanggal</th><th>Nama Aktivitas</th><th>Kuantitas</th><th>Poin</th><th>Aksi Salin</th></tr>
+              </thead>
+              <tbody id="tbodyRecentAktivitas">
+                <tr><td colspan="5" class="text-center text-muted">Belum ada data aktivitas terinput bulan ini.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: KALENDER INTERAKTIF -->
+      <section id="secCalendar" class="content-section">
+        <div class="recent-card">
+          <div class="calendar-header-bar">
+            <div>
+              <h3>📅 Kalender Kegiatan Harian</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Klik tanggal untuk melihat rincian aktivitas atau menambah laporan baru.</p>
+            </div>
+            <div class="calendar-nav-btn">
+              <button id="btnPrevMonth" type="button" class="btn-action outline" style="padding:6px 12px;">◀ Bulan Lalu</button>
+              <span id="calendarMonthTitle" style="font-weight:700; font-size:1.1rem; color:var(--accent-blue);">Oktober 2026</span>
+              <button id="btnNextMonth" type="button" class="btn-action outline" style="padding:6px 12px;">Bulan Depan ▶</button>
+            </div>
+          </div>
+
+          <div class="calendar-grid-wrapper">
+            <div class="calendar-day-header-wrapper">
+              <div style="color:#ef4444;">Min</div>
+              <div>Sen</div>
+              <div>Sel</div>
+              <div>Rab</div>
+              <div>Kam</div>
+              <div>Jum</div>
+              <div style="color:#ef4444;">Sab</div>
+            </div>
+            <div id="calendarDaysGrid" class="calendar-days-grid"></div>
+          </div>
+
+          <div id="calendarDayDetails" class="calendar-detail-card" style="display:none; margin-top:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h4 id="selectedCalendarDateTitle" style="color:var(--accent-green);">Aktivitas Tanggal --/--/----</h4>
+              <button id="btnCalendarAddForDate" type="button" class="btn-action primary" style="font-size:0.85rem; padding:6px 12px;">➕ Tambah Laporan Tanggal Ini</button>
+            </div>
+            <div class="table-responsive" style="margin-top:12px;">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Aktivitas</th><th>Volume</th><th>Poin</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody id="tbodyCalendarSelectedDate">
+                  <tr><td colspan="4" class="text-center text-muted">Tidak ada aktivitas pada tanggal ini.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: LAPORAN HARIAN -->
+      <section id="secLaporan" class="content-section">
+        <div class="form-container-card">
+          <h3>📝 Input Laporan Harian ASN</h3>
+          <form id="formKegiatanPWA" class="app-form">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Tanggal Laporan *</label>
+                <input type="date" id="inputTanggal" required>
+              </div>
+              <div class="form-group flex-1">
+                <label>Kuantitas Target *</label>
+                <input type="number" id="pwaKuantitas" value="1" min="1" required>
+              </div>
+            </div>
+
+            <!-- QUICK FILTER & SEARCH MASTER AKTIVITAS BAKU -->
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label>Nama Aktivitas Baku *</label>
+                <span id="aktivitasMatchCount" class="badge-match-count">0 Opsi Ditemukan</span>
+              </div>
+
+              <!-- Quick Category Chips -->
+              <div class="quick-filter-chips">
+                <button type="button" class="chip-filter active" data-filter="all">Semua</button>
+                <button type="button" class="chip-filter" data-filter="layanan">Layanan</button>
+                <button type="button" class="chip-filter" data-filter="dokumen">Dokumen/Surat</button>
+                <button type="button" class="chip-filter" data-filter="rapat">Rapat/Koordinasi</button>
+                <button type="button" class="chip-filter" data-filter="evaluasi">Verifikasi/Laporan</button>
+              </div>
+
+              <input type="text" id="pwaAktivitasInput" list="listMasterAktivitas" placeholder="Ketik kata kunci (contoh: 'verifikasi', 'arsip', 'konsep')..." required autocomplete="off">
+              <datalist id="listMasterAktivitas"></datalist>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label>Satuan Output</label>
+                <input type="text" id="pwaSatuan" value="Poin" readonly style="background: #0f172a; cursor: not-allowed;">
+              </div>
+              <div class="form-group flex-1">
+                <label>Kalkulasi Poin & Waktu</label>
+                <div class="calc-badge-display">
+                  <span>⏱️ <strong id="displayWaktu">0 Menit</strong></span>
+                  <span>🏆 <strong id="displayPoint">0 Poin</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Keterangan Uraian SMART</label>
+              <textarea id="pwaKeterangan" rows="3" placeholder="Contoh: Melakukan kegiatan tata kelola layanan teknis..."></textarea>
+            </div>
+
+            <!-- BUKTI PENDUKUNG CUSTOM DESAIN MODERN (MAKSIMAL 2MB) -->
+            <div class="form-group">
+              <label>Bukti Pendukung (Maksimal 2 MB)</label>
+              <div class="custom-file-upload" onclick="document.getElementById('pwaFileInput').click()">
+                <input type="file" id="pwaFileInput" accept="image/*,.pdf,.doc,.docx" style="display:none;">
+                <div class="upload-content">
+                  <span class="upload-icon">📁</span>
+                  <div class="upload-text">
+                    <strong id="btnSelectFileText">Klik untuk Pilih File / Foto (Maks 2 MB)</strong>
+                    <span id="pwaFileName" class="file-status">Format: JPG, PNG, PDF, DOCX (Sistem otomatis membatasi max 2 MB)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" id="btnSimpanPWA" class="btn-submit-main">💾 Simpan Ke Jurnal & Dapatkan Copy Teks</button>
+          </form>
+
+          <div id="cardCopyEkinerja" class="copy-box-card" style="display:none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4>📋 Teks Siap Tempel ke E-Kinerja Resmi Badung</h4>
+              <button type="button" onclick="clearDraftEkinerja()" class="btn-action outline" style="font-size: 0.8rem; padding: 4px 10px; color: #f87171; border-color: #f87171;">🗑️ Hapus Teks</button>
+            </div>
+
+            <div class="copy-row-grid">
+              <div class="copy-item">
+                <span>Nama Aktivitas:</span>
+                <p id="textNamaAktivitas">-</p>
+                <button type="button" onclick="copyText('textNamaAktivitas')">✂️ Copy Nama</button>
+              </div>
+              <div class="copy-item">
+                <span>Uraian Keterangan:</span>
+                <p id="textKeterangan">-</p>
+                <button type="button" onclick="copyText('textKeterangan')">✂️ Copy Uraian</button>
+              </div>
+            </div>
+            
+            <a href="https://kinerja.badungkab.go.id/admin" id="btnOpenEkinerja" target="_blank" class="btn-open-ekin">
+              🚀 Buka Pop-Up Tambah Aktivitas Badung ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: REKAPITULASI -->
+      <section id="secRekap" class="content-section">
+        <div class="recent-card">
+          <div class="print-header-pdf">
+            <h2>REKAPITULASI LAPORAN HARIAN KINERJA PEGAWAI</h2>
+            <h3 id="pdfOpdPegawai">BAGIAN ORGANISASI</h3>
+            <p style="margin-top: 6px; font-size: 11pt;">
+              <strong id="pdfNamaPegawai">NAMA PEGAWAI</strong> • <span id="pdfNipPegawai">NIP. -</span>
+            </p>
+          </div>
+
+          <div class="card-header-flex">
+            <h3>📊 Rekapitulasi Laporan Bulanan</h3>
+            <button onclick="window.print()" class="btn-action primary">🖨️ Cetak / Download PDF</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Tanggal</th><th>Aktivitas</th><th>Volume</th><th>Durasi</th><th>Poin</th><th>Bukti Drive</th></tr>
+              </thead>
+              <tbody id="tbodyRekapFull">
+                <tr><td colspan="6" class="text-center text-muted">Memuat data rekap...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: CATATAN CEPAT -->
+      <section id="secQuickCopy" class="content-section">
+        <div class="recent-card">
+          <h3>⚡ Catatan & Daftar Tugas Cepat (To-Do List)</h3>
+          <p class="text-muted mb-15">Tulis catatan kegiatan atau tugas mendadak. Catatan bisa langsung dijadwalkan menjadi Laporan Harian atau dihapus setelah selesai.</p>
+          
+          <form id="formAddTodo" style="display:flex; gap:10px; margin-bottom:20px;">
+            <input type="text" id="inputTodoText" placeholder="Catatan tugas baru..." required style="flex:1;">
+            <button type="submit" class="btn-action primary" style="white-space:nowrap;">➕ Tambah Catatan</button>
+          </form>
+
+          <div id="todoListContainer" class="todo-list-grid">
+            <p class="text-muted text-center">Belum ada catatan tugas tersimpan.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: ARSIP DOKUMEN -->
+      <section id="secArsip" class="content-section">
+        <div class="recent-card">
+          <h3>📁 Arsip Bukti Pendukung Google Drive</h3>
+          <ul id="listArsipBukti" class="arsip-list"><li class="text-muted">Belum ada file terarsip.</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION: PENGATURAN -->
+      <section id="secPengaturan" class="content-section">
+        <div class="form-container-card">
+          <h3>⚙️ Pengaturan Aplikasi & Profil</h3>
+          
+          <form id="formEditProfile" class="app-form">
+            <div class="form-group">
+              <label>NIP Pegawai (Tidak Dapat Diubah)</label>
+              <input type="text" id="settingNip" readonly style="background:#0f172a; cursor:not-allowed;">
+            </div>
+
+            <div class="form-group">
+              <label>Nama Lengkap & Gelar</label>
+              <input type="text" id="settingNama" required style="text-transform:uppercase;">
+            </div>
+
+            <div class="form-group">
+              <label>Jabatan</label>
+              <input type="text" id="settingJabatan" required style="text-transform:uppercase;">
+            </div>
+
+            <div class="form-group">
+              <label>OPD / Unit Kerja</label>
+              <input type="text" id="settingOpd" required style="text-transform:uppercase;">
+            </div>
+
+            <div class="form-group">
+              <label>Ubah PIN Akses Rahasia (Kosongkan Jika Tidak Diubah)</label>
+              <input type="password" id="settingPinBaru" placeholder="PIN Baru (4-6 Digit)">
+            </div>
+
+            <button type="submit" class="btn-action primary">💾 Simpan Perubahan Profil</button>
+          </form>
+
+          <hr style="border:0; border-top:1px solid var(--border-color); margin: 24px 0;">
+
+          <h4 style="margin-bottom:12px; color:var(--accent-orange);">⚙️ Opsi Konfigurasi & Pembersihan</h4>
+          
+          <div class="form-group mb-15">
+            <label>Target Poin Bulanan Custom (Default: 10.000)</label>
+            <div style="display:flex; gap:10px;">
+              <input type="number" id="settingTargetPoin" value="10000" min="1000">
+              <button type="button" id="btnSaveTargetPoin" class="btn-action outline">Simpan Target</button>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+            <button type="button" id="btnToggleTheme" class="btn-action outline">🌓 Ganti Mode Tampilan (Dark/Light)</button>
+            <button type="button" id="btnResetLocalCache" class="btn-action outline" style="color:var(--accent-orange); border-color:var(--accent-orange);">🧹 Bersihkan Cache Lokal PWA</button>
+          </div>
+
+          <hr style="border:0; border-top:1px solid var(--border-color); margin: 24px 0;">
+
+          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 12px; padding: 18px;">
+            <h4 style="color: #f87171; margin-bottom: 6px;">⚠️ Zona Bahaya: Hapus Akun</h4>
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
+              Menghapus akun akan menghapus profil Anda, seluruh riwayat jurnal di spreadsheet, serta <strong>menghapus permanen seluruh file bukti fisik di Google Drive</strong>. Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <button type="button" id="btnDeleteAccount" class="btn-action outline" style="background:#ef4444; color:white; border:none;">
+              🗑️ Hapus Akun & Seluruh File Drive Permanen
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
