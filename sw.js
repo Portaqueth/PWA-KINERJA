@@ -1,12 +1,13 @@
-// SW.JS - SERVICE WORKER PWA E-KINERJA BADUNG (VERSI V40)
-const CACHE_NAME = 'ekinerja-pwa-badung-v40';
+const CACHE_NAME = 'ekinerja-pwa-badung-v41';
 
 const urlsToCache = [
   './',
   './index.html',
   './styles.css',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {

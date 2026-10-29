@@ -523,7 +523,7 @@ input.invalid-nip { border-color: var(--accent-orange) !important; }
 #secPengaturan .form-container-card { max-width: 650px; padding: 28px; }
 #secPengaturan h3 { color: var(--text-main); font-size: 1.15rem; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
 
-/* FIX UNTUK SELECT DROPDOWN AGAR TIDAK MELEBAR MERUSAK LAYOUT */
+/* FIX SELECT DROPDOWN */
 select#pwaAktivitasInput {
   max-width: 100% !important;
   box-sizing: border-box !important;
@@ -542,41 +542,40 @@ select#pwaAktivitasInput option {
   max-width: 100% !important;
 }
 
+/* RESPONSIVE CSS UNTUK HP (MAX-WIDTH: 768PX) */
+@media screen and (max-width: 768px) {
+  .dashboard-wrapper { flex-direction: column; }
+  .sidebar { width: 100% !important; height: auto !important; position: relative !important; padding: 12px 16px !important; border-right: none !important; border-bottom: 1px solid var(--border-color); }
+  .main-content { margin-left: 0 !important; padding: 16px !important; }
+  .dashboard-wrapper.sidebar-collapsed .main-content { margin-left: 0 !important; }
+  .sidebar-menu { display: flex; flex-direction: row; overflow-x: auto; padding-bottom: 8px; gap: 6px; }
+  .nav-item { white-space: nowrap; padding: 8px 12px; font-size: 0.85rem; }
+  .sidebar-footer { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .stat-card { padding: 12px !important; }
+  .stat-num { font-size: 1.2rem !important; }
+  .form-row { flex-direction: column !important; gap: 12px !important; }
+  .quick-actions-bar { flex-direction: column; gap: 8px; }
+  .btn-action { width: 100%; text-align: center; }
+  select#pwaAktivitasInput, input[type="text"], input[type="number"], input[type="date"] { font-size: 16px !important; }
+  .calendar-days-grid { gap: 4px !important; }
+  .calendar-day-cell { min-height: 55px !important; padding: 4px !important; }
+  .calendar-day-num { font-size: 0.8rem !important; }
+  .calendar-day-badge, .calendar-count-badge { font-size: 0.6rem !important; padding: 1px 3px !important; }
+  .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
 @media print {
-  .sidebar, .top-bar, .quick-actions-bar, .btn-action, .auth-wrapper, .brand-logo, #cardCopyEkinerja, #formKegiatanPWA, .dashboard-hero, .calendar-header-bar, .calendar-grid-wrapper, .card-header-flex h3 {
-    display: none !important;
-  }
+  .sidebar, .top-bar, .quick-actions-bar, .btn-action, .auth-wrapper, .brand-logo, #cardCopyEkinerja, #formKegiatanPWA, .dashboard-hero, .calendar-header-bar, .calendar-grid-wrapper, .card-header-flex h3 { display: none !important; }
   body { background-color: #ffffff !important; color: #000000 !important; padding: 0 !important; margin: 0 !important; }
   .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
   .recent-card { background: #ffffff !important; border: none !important; padding: 0 !important; }
-  
   .data-table { width: 100% !important; border-collapse: collapse !important; margin-top: 15px !important; }
   .data-table th, .data-table td { border: 1px solid #000000 !important; color: #000000 !important; padding: 8px 12px !important; font-size: 10pt !important; }
   .data-table th { background-color: #f1f5f9 !important; font-weight: bold !important; }
-  
-  .print-header-pdf {
-    display: block !important;
-    text-align: center;
-    border-bottom: 2px solid #000000;
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-  }
-  .print-header-pdf h2 {
-    font-size: 13pt;
-    font-weight: bold;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-  .print-header-pdf h3 {
-    font-size: 11pt;
-    font-weight: bold;
-    color: #1e293b;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-  .print-header-pdf p {
-    font-size: 10pt;
-    color: #000000;
-  }
+  .print-header-pdf { display: block !important; text-align: center; border-bottom: 2px solid #000000; padding-bottom: 12px; margin-bottom: 20px; }
+  .print-header-pdf h2 { font-size: 13pt; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
+  .print-header-pdf h3 { font-size: 11pt; font-weight: bold; color: #1e293b; margin-bottom: 6px; text-transform: uppercase; }
+  .print-header-pdf p { font-size: 10pt; color: #000000; }
 }
 .print-header-pdf { display: none; }

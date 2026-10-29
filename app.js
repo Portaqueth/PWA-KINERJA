@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchHolidaysFromPublicAPI();
 });
 
-// MEMUAT DATA MASTER DARI GOOGLE APPS SCRIPT
 function fetchMasterAktivitas() {
   const selectElem = document.getElementById("pwaAktivitasInput");
   if (selectElem) {
@@ -43,12 +42,10 @@ function fetchMasterAktivitas() {
   fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "get_master_aktivitas" }) })
     .then(res => res.json())
     .then(res => {
-      console.log("Response Master Data:", res);
       if (res.status === "success" && Array.isArray(res.data) && res.data.length > 0) {
         localMasterData = res.data;
         renderMasterAktivitasDatalist("");
       } else {
-        alert("⚠️ Gagal mengambil data: " + (res.message || "Data sheet Aktivitas Baku kosong"));
         if (selectElem) selectElem.innerHTML = '<option value="">⚠️ Data Gagal Dimuat</option>';
       }
     })
@@ -58,7 +55,6 @@ function fetchMasterAktivitas() {
     });
 }
 
-// LOGIKA FILTER & PENCARIAN DROPDOWN SELECT
 function setupQuickFilterEvents() {
   const filterBtns = document.querySelectorAll(".chip-filter");
   const inputSearch = document.getElementById("inputSearchKeyword");
@@ -120,7 +116,6 @@ function renderMasterAktivitasDatalist(keyword = "") {
   if (matchBadge) matchBadge.innerText = `${matchCount} Opsi Ditemukan`;
 }
 
-// LOGIKA KALKULASI POIN DAN WAKTU HARIAN
 function setupFormKegiatan() {
   const selectAktivitas = document.getElementById("pwaAktivitasInput");
   const inputSatuan = document.getElementById("pwaSatuan");
@@ -140,7 +135,7 @@ function setupFormKegiatan() {
 
     if (match) {
       selectedWaktu = parseInt(match.waktu) || 0;                          // Kolom F: Waktu
-      selectedPoint = parseInt(match.point) || parseInt(match.beban) || 0; // Kolom G: Beban (Poin)
+      selectedPoint = parseInt(match.point) || parseInt(match.beban) || 0; // Kolom G: Beban
       selectedSatuan = match.satuan || "Poin";                             // Kolom C: Satuan
     } else {
       selectedWaktu = 0;
