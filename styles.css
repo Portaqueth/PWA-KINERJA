@@ -523,6 +523,25 @@ input.invalid-nip { border-color: var(--accent-orange) !important; }
 #secPengaturan .form-container-card { max-width: 650px; padding: 28px; }
 #secPengaturan h3 { color: var(--text-main); font-size: 1.15rem; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
 
+/* FIX UNTUK SELECT DROPDOWN AGAR TIDAK MELEBAR MERUSAK LAYOUT */
+select#pwaAktivitasInput {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+select#pwaAktivitasInput option {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  padding: 8px 12px !important;
+  max-width: 100% !important;
+}
+
 @media print {
   .sidebar, .top-bar, .quick-actions-bar, .btn-action, .auth-wrapper, .brand-logo, #cardCopyEkinerja, #formKegiatanPWA, .dashboard-hero, .calendar-header-bar, .calendar-grid-wrapper, .card-header-flex h3 {
     display: none !important;
